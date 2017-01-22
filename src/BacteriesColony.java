@@ -31,27 +31,26 @@ public class BacteriesColony {
         ArrayList<Integer> growing = new ArrayList<>();
         ArrayList<Integer> shrinking = new ArrayList<>();
 
-        //Флаг для выхода из цикла do-while
-        boolean flag = true;
-
-        do {
-            for (int i = 1; i < colonies.length - 1; i++) {  //Проходим по массиву colonies от второго до предпоследнего элемента
-
+        //Бесконечный цикл "день-ночь". Прерывается после наступления равновесия в системе.
+        for(;;) {
+            //Проходим по массиву colonies от второго до предпоследнего элемента
+            for (int i = 1; i < colonies.length - 1; i++) {
+                //Запоминаем индексы значений, которые следует увеличить
                 if (colonies[i - 1] > colonies[i] && colonies[i] < colonies[i + 1]) {
-                    growing.add(i); //Запоминаем индексы значений, которые следует увеличить
+                    growing.add(i);
                     continue;
                 }
+                //Запоминаем индексы значений, которые следует уменьшить
                 if (colonies[i - 1] < colonies[i] && colonies[i] > colonies[i + 1]) {
-                    shrinking.add(i); //Запоминаем индексы значений, которые следует уменьшить
+                    shrinking.add(i);
                 }
             }
-            //После "дневного" цикла проверяем, есть ли значения для изменения. Если нет, бросаем флаг.
+            //После "дневного" цикла проверяем, есть ли значения для изменения. Если нет, возвращаем массив colonies.
             if (growing.size()+shrinking.size()==0) {
-                flag = false;
-                continue;
+                return colonies;
             }
 
-            //Изменияем значения массива colonies и чистим коллекции
+            //Изменяем значения массива colonies и чистим коллекции
             for (Integer foo : growing) {
                 colonies[foo]++;
             }
@@ -62,8 +61,5 @@ public class BacteriesColony {
             }
             shrinking.clear();
         }
-        while (flag);
-
-        return colonies;
     }
 }
